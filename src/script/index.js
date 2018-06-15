@@ -1,5 +1,6 @@
 /****************************************************************************
  * Copyright 2018 EPAM Systems
+ * Modifications copyright (C) 2018 metaphacts GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,98 +15,23 @@
  * limitations under the License.
  ***************************************************************************/
 
-import 'babel-polyfill';
-import 'whatwg-fetch';
-import queryString from 'query-string';
+/* 
+ * ===Changes metaphacts===
+ *
+ * 2018 Johannes Trame <jt@metaphacts.com>
+ * - change module exports to ease integration
+ */
 
-import api from './api';
+import ketcherui from './ui/app';
 import molfile from './chem/molfile';
 import smiles from './chem/smiles';
-import * as structformat from './ui/data/convert/structformat';
+/*
+	import {ketcherui, smiles} from 'ketcher/dist/ketcher';
+	
+	// can be simply initalized, i.e. using a callback ref
+	// https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
+	ketcherui(element, {});
 
-import ui from './ui';
-import Render from './render';
-
-function getSmiles() {
-	return smiles.stringify(ketcher.editor.struct(),
-		{ ignoreErrors: true });
-}
-
-function saveSmiles() {
-	const struct = ketcher.editor.struct();
-	return structformat.toString(struct, 'smiles-ext', ketcher.server)
-		.catch(() => smiles.stringify(struct));
-}
-
-function getMolfile() {
-	return molfile.stringify(ketcher.editor.struct(),
-		{ ignoreErrors: true });
-}
-
-function setMolecule(molString) {
-	if (!(typeof molString === 'string'))
-		return;
-	ketcher.ui.load(molString, {
-		rescale: true
-	});
-}
-
-function addFragment(molString) {
-	if (!(typeof molString === 'string'))
-		return;
-	ketcher.ui.load(molString, {
-		rescale: true,
-		fragment: true
-	});
-}
-
-function showMolfile(clientArea, molString, options) {
-	const render = new Render(clientArea, Object.assign({
-		scale: options.bondLength || 75
-	}, options));
-	if (molString) {
-		const mol = molfile.parse(molString);
-		render.setMolecule(mol);
-	}
-	render.update();
-	// not sure we need to expose guts
-	return render;
-}
-
-// TODO: replace window.onload with something like <https://github.com/ded/domready>
-// to start early
-window.onload = function () {
-	const params = queryString.parse(document.location.search);
-	if (params.api_path)
-		ketcher.apiPath = params.api_path;
-	ketcher.server = api(ketcher.apiPath, {
-		'smart-layout': true,
-		'ignore-stereochemistry-errors': true,
-		'mass-skip-error-on-pseudoatoms': false,
-		'gross-formula-add-rsites': true
-	});
-	ketcher.ui = ui(Object.assign({}, params, buildInfo), ketcher.server);
-	ketcher.editor = global._ui_editor;
-	ketcher.server.then(() => {
-		if (params.mol)
-			ketcher.ui.load(params.mol);
-	}, () => {
-		document.title += ' (standalone)';
-	});
-};
-
-const buildInfo = {
-	version: '__VERSION__',
-	apiPath: '__API_PATH__',
-	buildDate: '__BUILD_DATE__',
-	buildNumber: '__BUILD_NUMBER__' || null
-};
-
-const ketcher = module.exports = Object.assign({ // eslint-disable-line no-multi-assign
-	getSmiles,
-	saveSmiles,
-	getMolfile,
-	setMolecule,
-	addFragment,
-	showMolfile
-}, buildInfo);
+	console.log(smiles.stringify(window['_ui_editor'].struct(), {ignoreErrors: true }))
+*/
+module.exports = {ketcherui, molfile, smiles};
