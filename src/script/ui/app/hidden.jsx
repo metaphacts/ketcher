@@ -26,7 +26,7 @@ import { initTmplLib } from '../state/templates';
 export const AppHidden = connect(
 	null,
 	dispatch => ({
-		onInitTmpls: cacheEl => initTmplLib(dispatch, '', cacheEl)
+		onInitTmpls: cacheEl => initTmplLib(dispatch, '../assets/', cacheEl)
 	})
 )(class extends Component {
 	componentDidMount() {
