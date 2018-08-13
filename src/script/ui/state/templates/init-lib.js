@@ -11,8 +11,8 @@ export function initLib(lib) {
 }
 
 export default function initTmplLib(dispatch, baseUrl, cacheEl) {
-	prefetchStatic(baseUrl + 'library.sdf').then((text) => {
-		const tmpls = sdf.parse(text);
+	import('library.sdf').then((text) => {
+		const tmpls = sdf.parse(text.default);
 		const prefetch = prefetchRender(tmpls, baseUrl, cacheEl);
 
 		return prefetch.then(cachedFiles => (
@@ -53,11 +53,7 @@ function userTmpls() {
 }
 
 function prefetchStatic(url) {
-	return fetch(url, { credentials: 'same-origin' }).then((resp) => {
-		if (resp.ok)
-			return resp.text();
-		throw Error('Could not fetch ' + url);
-	});
+	return import(url).then(resp => resp.default);
 }
 
 function prefetchSplit(tmpl) {

@@ -61,7 +61,8 @@ module.exports.createBundleConfig = (options) => ({
 				'transform-class-properties',
 				'transform-object-rest-spread',
 				['transform-react-jsx', { pragma: 'h' }],
-				['transform-builtin-extend', { globals: ['Set', 'Map'] }]
+				['transform-builtin-extend', { globals: ['Set', 'Map'] }],
+				'syntax-dynamic-import'
 			]
 		}]
 	]

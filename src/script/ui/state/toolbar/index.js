@@ -54,10 +54,8 @@ export function initResize() {
 }
 
 export function initIcons(cacheEl) {
-	const iconpath = '../assets/ketcher.svg';
-	fetch(iconpath, { credentials: 'same-origin' }).then((resp) => {
-		if (resp.ok) resp.text().then((svg) => { cacheEl.innerHTML += svg; });
-		else throw Error(`Could not fetch ${iconpath}`);
+	import('ketcher.svg').then(svg => {
+		cacheEl.innerHTML += svg.default;
 	});
 }
 
